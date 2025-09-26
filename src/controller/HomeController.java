@@ -5,6 +5,7 @@ import model.Person;
 import model.enums.Role;
 import repository.InMemoryImpl.InMemoryClientRepository;
 import service.serviceImpl.AuthServiceImpl;
+import service.serviceImpl.ClientServiceImpl;
 import util.ValidatorUtil;
 import view.BankerView;
 import view.ClientView;
@@ -12,7 +13,12 @@ import view.ClientView;
 import java.util.Optional;
 
 public class HomeController {
-    public static final AuthServiceImpl authService = new AuthServiceImpl(new InMemoryClientRepository());
+    private static final InMemoryClientRepository clientRepository = new InMemoryClientRepository();
+    private static final AuthServiceImpl authService = new AuthServiceImpl(clientRepository);
+    private static final ClientServiceImpl clientService = new ClientServiceImpl(clientRepository, authService);
+    private static final BankerController bankerController = new BankerController(clientService);
+    private static final BankerView bankerView = new BankerView(bankerController);
+
     public static Person currentUser = null; //track the logged-in user
 
     public static boolean authenticateUser(String email, String password, int roleChoice) {
@@ -41,7 +47,7 @@ public class HomeController {
                     if (expectedRole == Role.CLIENT) {
                         ClientView.clientView();
                     } else {
-                        BankerView.bankerView();
+                        bankerView.bankerView();
                     }
                     return true;
                 } else {
