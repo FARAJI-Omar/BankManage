@@ -53,13 +53,15 @@ public class BankerView {
 
             switch(choice) {
                 case 1:
-                    System.out.println("Viewing All Clients... (Not implemented yet)");
+                    System.out.println("\n=== All Clients ===\n");
+                    bankerController.viewAllClients();
                     break;
                 case 2:
                     addNewClient();
                     break;
                 case 3:
-                    System.out.println("Removing Client... (Not implemented yet)");
+                    System.out.println("\n=== Remove Client ===\n");
+                    bankerController.removeClient();
                     break;
                 case 4:
                     System.out.println("\n");

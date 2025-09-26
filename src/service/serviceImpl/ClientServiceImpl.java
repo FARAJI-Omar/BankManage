@@ -8,6 +8,7 @@ import service.ClientService;
 import util.ValidatorUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ClientServiceImpl implements ClientService {
@@ -54,5 +55,15 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.save(newClient);
 
         return newClient;
+    }
+
+    @Override
+    public List<Client> listClients(){
+        return clientRepository.findAll();
+    }
+
+    @Override
+    public void deleteClient(UUID clientId) {
+        clientRepository.delete(clientId);
     }
 }
