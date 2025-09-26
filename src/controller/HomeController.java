@@ -3,9 +3,11 @@ package controller;
 import exceptions.AccountNotFoundException;
 import model.Person;
 import model.enums.Role;
+import repository.InMemoryImpl.InMemoryAccountRepository;
 import repository.InMemoryImpl.InMemoryClientRepository;
 import service.serviceImpl.AuthServiceImpl;
 import service.serviceImpl.ClientServiceImpl;
+import service.serviceImpl.AccountServiceImpl;
 import util.ValidatorUtil;
 import view.BankerView;
 import view.ClientView;
@@ -14,9 +16,11 @@ import java.util.Optional;
 
 public class HomeController {
     private static final InMemoryClientRepository clientRepository = new InMemoryClientRepository();
+    private static final InMemoryAccountRepository accountRepository = new InMemoryAccountRepository();
     private static final AuthServiceImpl authService = new AuthServiceImpl(clientRepository);
     private static final ClientServiceImpl clientService = new ClientServiceImpl(clientRepository, authService);
-    private static final BankerController bankerController = new BankerController(clientService);
+    private static final AccountServiceImpl accountService = new AccountServiceImpl(accountRepository);
+    private static final BankerController bankerController = new BankerController(clientService, accountService);
     private static final BankerView bankerView = new BankerView(bankerController);
 
     public static Person currentUser = null; //track the logged-in user

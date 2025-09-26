@@ -1,6 +1,7 @@
 package view;
 
 import controller.BankerController;
+import model.enums.TypeAccount;
 import util.InputUtil;
 
 public class BankerView {
@@ -111,12 +112,43 @@ public class BankerView {
     private void addNewClient() {
         System.out.println("\n=== Add New Client ===\n");
 
-        // View responsibility: Collect input from user
+        // Collect personal information
         String firstName = InputUtil.readString("Enter first name");
         String lastName = InputUtil.readString("Enter last name");
         String email = InputUtil.readString("Enter email");
         String password = InputUtil.readString("Enter password");
 
-        bankerController.addNewClient(firstName, lastName, email, password);
+        // Collect account information
+        System.out.println("\nAccount Information:\n");
+
+        TypeAccount accountType;
+        while (true) {
+            System.out.println("Account Type:");
+            System.out.println("1. CHECKING");
+            System.out.println("2. SAVINGS");
+            System.out.println("3. TERM_DEPOSIT");
+
+            int accountTypeChoice = InputUtil.readInt("Select account type (1-3)");
+
+            switch (accountTypeChoice) {
+                case 1:
+                    accountType = TypeAccount.CHECKING;
+                    break;
+                case 2:
+                    accountType = TypeAccount.SAVINGS;
+                    break;
+                case 3:
+                    accountType = TypeAccount.TERM_DEPOSIT;
+                    break;
+                default:
+                    System.out.println("Invalid selection. Please select 1, 2, or 3.\n");
+                    continue;
+            }
+            break; // Exit loop when valid selection is made
+        }
+
+        double initialBalance = InputUtil.readDouble("Enter initial balance");
+
+        bankerController.addNewClientWithAccount(firstName, lastName, email, password, accountType, initialBalance);
     }
 }

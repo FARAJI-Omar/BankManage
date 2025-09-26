@@ -9,8 +9,13 @@ import java.util.UUID;
 public interface ClientService {
     Client createClient(String firstName, String lastName, String email, String password);
 
-    void deleteClient(UUID clientId);
-
-    // ...existing code...
     List<Client> listClients();
+
+    void deleteClient(UUID clientId);
+//
+//    void updateClient(UUID clientId, String firstName, String lastName, String email, String password);
+//
+//    Optional<Client> findClientById(UUID clientId);
+//
+//    Optional<Client> findClientByEmail(String email);
 }

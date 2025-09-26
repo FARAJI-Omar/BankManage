@@ -1,6 +1,9 @@
 package controller;
 
+import model.Account;
 import model.Client;
+import model.enums.TypeAccount;
+import service.AccountService;
 import service.ClientService;
 
 import java.util.List;
@@ -8,28 +11,36 @@ import java.util.List;
 public class BankerController {
 
     private final ClientService clientService;
+    private final AccountService accountService;
 
-    public BankerController(ClientService clientService) {
+    public BankerController(ClientService clientService, AccountService accountService) {
         this.clientService = clientService;
+        this.accountService = accountService;
     }
 
-    public boolean addNewClient(String firstName, String lastName, String email, String password) {
+    public void addNewClientWithAccount(String firstName, String lastName, String email, String password,
+                                          TypeAccount accountType, double initialBalance) {
         try {
+            // Create new client first
             Client newClient = clientService.createClient(firstName, lastName, email, password);
 
-            System.out.println("\nClient created successfully!");
-            System.out.println("| Name: " + newClient.getFirstName() + " " + newClient.getLastName());
-            System.out.println("| Email: " + newClient.getEmail());
-            System.out.println("| Password : " + newClient.getPassword());
+            // Create new account for the client
+            Account newAccount = accountService.createAccount(newClient, accountType, initialBalance);
 
-            return true;
+            System.out.println("\nClient and Account created successfully!");
+            System.out.println("\nClient Details:");
+            System.out.println("  Name: " + newClient.getFirstName() + " " + newClient.getLastName());
+            System.out.println("  Email: " + newClient.getEmail());
+            System.out.println("  Password: " + newClient.getPassword());
+
+            System.out.println("\nAccount Details:");
+            System.out.println("  Account Type: " + newAccount.getAccountType());
+            System.out.println("  Initial Balance: DH" + String.format("%.2f", newAccount.getBalance()));
 
         } catch (IllegalArgumentException e) {
             System.out.println("\nError: " + e.getMessage());
-            return false;
         } catch (Exception e) {
             System.out.println("\nAn unexpected error occurred: " + e.getMessage());
-            return false;
         }
     }
 

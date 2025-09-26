@@ -8,13 +8,14 @@ import java.util.*;
 
 public interface AccountService {
     Account createAccount(Client client, TypeAccount type, double initialBalance);
-
-    void closeAccount(UUID accountId);
-
-    void updateAccount(Account account);
-
-    Optional<Account> findAccountById(UUID accountId);
-
-    List<Account> getAccountsByClient(Client client);
-
-    List<Account> listAccounts();}
+//
+//    void closeAccount(UUID accountId);
+//
+//    void updateAccount(Account account);
+//
+//    Optional<Account> findAccountById(UUID accountId);
+//
+//    List<Account> getAccountsByClient(Client client);
+//
+//    List<Account> listAccounts();
+}
