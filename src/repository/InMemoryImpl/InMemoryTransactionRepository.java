@@ -31,8 +31,4 @@ public class InMemoryTransactionRepository implements TransactionRepository {
         return transactions;
     }
 
-    @Override
-    public void withdraw(UUID accountId, double amount) {
-
-    }
 }

@@ -23,4 +23,14 @@ public class ValidatorUtil {
     public static boolean isValidWithdrawAmount(double amount) {
         return amount > 0 && amount <= 10000; // Max withdrawal limit of 10,000 DH
     }
+
+    // deposit amount validation
+    public static boolean isValidDepositAmount(double amount) {
+        return amount > 0 && amount <= 20000; // Max deposit limit of 20,000 DH
+    }
+
+    // transfer amount validation
+    public static boolean isValidTransferAmount(double amount) {
+        return amount > 0 && amount <= 30000; // Max transfer limit of 30,000 DH
+    }
 }

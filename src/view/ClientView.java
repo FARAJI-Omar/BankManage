@@ -44,7 +44,7 @@ public class ClientView {
                     showTransactionMenu();
                     break;
                 case 2:
-                    System.out.println("Viewing Transaction History... (Not implemented yet)");
+                    clientController.viewTransactionHistory();
                     break;
                 case 3:
                     System.out.println("Logged out successfully!");
@@ -71,10 +71,10 @@ public class ClientView {
                     clientController.makeWithdrawal();
                     break;
                 case 2:
-                    System.out.println("Deposit functionality... (Not implemented yet)");
+                    clientController.makeDeposit();
                     break;
                 case 3:
-                    System.out.println("Transfer functionality... (Not implemented yet)");
+                    clientController.makeTransfer();
                     break;
                 case 4:
                     return; // Go back to main menu

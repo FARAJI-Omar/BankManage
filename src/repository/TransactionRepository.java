@@ -10,12 +10,6 @@ public interface TransactionRepository {
     // save new transaction
     void save(Transaction transaction);
 
-    void withdraw(UUID accountId, double amount);
-
-//    void deposit(UUID accountId, double amount);
-//
-//    void transfer(UUID fromAccountId, UUID toAccountId, double amount);
-
     // find transactions by account id
     List<Transaction> findByAccountId(UUID accountId);
 
