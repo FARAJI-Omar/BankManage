@@ -1,8 +1,6 @@
 package exceptions;
 
-import java.util.NoSuchElementException;
-
-public class AccountNotFoundException extends NoSuchElementException {
+public class AccountNotFoundException extends RuntimeException {
 	public AccountNotFoundException(String message) {
 		super(message);
 	}
