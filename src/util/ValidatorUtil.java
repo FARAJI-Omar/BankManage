@@ -18,4 +18,9 @@ public class ValidatorUtil {
         String nameRegex = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
         return name != null && name.matches(nameRegex);
     }
+
+    // withdrawal amount validation
+    public static boolean isValidWithdrawAmount(double amount) {
+        return amount > 0 && amount <= 10000; // Max withdrawal limit of 10,000 DH
+    }
 }

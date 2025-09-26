@@ -30,4 +30,9 @@ public class InMemoryTransactionRepository implements TransactionRepository {
     public  List<Transaction> findAll(){
         return transactions;
     }
+
+    @Override
+    public void withdraw(UUID accountId, double amount) {
+
+    }
 }
