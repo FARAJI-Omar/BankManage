@@ -82,6 +82,7 @@ This project is a **Java console application** that simulates account and transa
 ## 📂 Project Structure
 src/
 src/
+src/
 ├── model/
 │   ├── Person.java
 │   ├── Client.java
@@ -118,11 +119,12 @@ src/
 │   └── BankerView.java
 │
 └── util/
-    ├── DateUtil.java
-    ├── InputUtil.java
-    └── ValidatorUtil.java
+├── DateUtil.java
+├── InputUtil.java
+└── ValidatorUtil.java
 │
 └── Main.java
+
 
 
 
