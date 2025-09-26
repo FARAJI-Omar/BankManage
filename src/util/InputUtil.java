@@ -1,13 +1,12 @@
 package util;
 
 import java.util.Scanner;
-import java.util.*;
 
 public class InputUtil {
     public static Scanner scanner = new Scanner(System.in);
 
     // read a line with a message
-    public static String readLine(String message) {
+    public static String readString(String message) {
         System.out.print(message + ": ");
         return scanner.nextLine().trim();
     }
@@ -39,7 +38,7 @@ public class InputUtil {
     // read yes/no input
     public static boolean readYesNo(String message) {
         while (true) {
-            String input = readLine(message + " (y for yes/n for no)").toLowerCase();
+            String input = readString(message + " (y for yes/n for no)").toLowerCase();
             if (input.equals("y")) return true;
             if (input.equals("n")) return false;
             System.out.println("Enter 'y' or 'n'.");
