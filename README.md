@@ -81,47 +81,49 @@ This project is a **Java console application** that simulates account and transa
 
 ## 📂 Project Structure
 src/
+src/
 ├── model/
-│ ├── Person.java
-│ ├── Client.java
-│ ├── Account.java
-│ ├── Transaction.java
-│ ├── enums/
-│ │ ├── AccountType.java
-│ │ ├── TransactionType.java
-│ │ └── Role.java
+│   ├── Person.java
+│   ├── Client.java
+│   ├── Account.java
+│   ├── Transaction.java
+│   ├── enums/
+│   │   ├── AccountType.java
+│   │   ├── TransactionType.java
+│   │   └── Role.java
 │
 ├── repository/
-│ ├── ClientRepository.java
-│ ├── AccountRepository.java
-│ ├── TransactionRepository.java
-│ └── InMemoryImpl/
-│ ├── InMemoryClientRepository.java
-│ ├── InMemoryAccountRepository.java
-│ └── InMemoryTransactionRepository.java
+│   ├── ClientRepository.java
+│   ├── AccountRepository.java
+│   ├── TransactionRepository.java
+│   └── InMemoryImpl/
+│       ├── InMemoryClientRepository.java
+│       ├── InMemoryAccountRepository.java
+│       └── InMemoryTransactionRepository.java
 │
 ├── service/
-│ ├── AuthService.java
-│ ├── ClientService.java
-│ ├── AccountService.java
-│ ├── TransactionService.java
-│ └── impl/
-│ ├── AuthServiceImpl.java
-│ ├── ClientServiceImpl.java
-│ ├── AccountServiceImpl.java
-│ └── TransactionServiceImpl.java
+│   ├── AuthService.java
+│   ├── ClientService.java
+│   ├── AccountService.java
+│   ├── TransactionService.java
+│   └── impl/
+│       ├── AuthServiceImpl.java
+│       ├── ClientServiceImpl.java
+│       ├── AccountServiceImpl.java
+│       └── TransactionServiceImpl.java
 │
 ├── view/
-│ ├── MainMenu.java
-│ ├── ClientView.java
-│ └── BankerView.java
+│   ├── MainMenu.java
+│   ├── ClientView.java
+│   └── BankerView.java
 │
 └── util/
-├── DateUtil.java
-├── InputUtil.java
-└── ValidatorUtil.java
-├
+    ├── DateUtil.java
+    ├── InputUtil.java
+    └── ValidatorUtil.java
+│
 └── Main.java
+
 
 
 ## 📂 Class Diagram
