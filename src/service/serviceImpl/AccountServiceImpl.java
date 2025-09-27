@@ -45,4 +45,25 @@ public class AccountServiceImpl implements AccountService {
 
         return newAccount;
     }
+
+    @Override
+    public double getTotalSystemBalance() {
+        return accountRepository.findAll().stream()
+                .mapToDouble(Account::getBalance)
+                .sum();
+    }
+
+    @Override
+    public double getAverageAccountBalance() {
+        int accountCount = getTotalAccountCount();
+        if (accountCount == 0) {
+            return 0.0;
+        }
+        return getTotalSystemBalance() / accountCount;
+    }
+
+    @Override
+    public int getTotalAccountCount() {
+        return accountRepository.findAll().size();
+    }
 }

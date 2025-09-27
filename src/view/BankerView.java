@@ -103,8 +103,7 @@ public class BankerView {
     }
 
     public void statistics(){
-        System.out.println("\n== Statistics ==\n");
-        System.out.println("Viewing Statistics... (Not implemented yet)");
+        bankerController.displayStatistics();
     }
 
     // ----------------------------------------------

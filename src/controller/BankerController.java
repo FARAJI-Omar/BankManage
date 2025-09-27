@@ -5,6 +5,7 @@ import model.Client;
 import model.enums.TypeAccount;
 import service.AccountService;
 import service.ClientService;
+import service.TransactionService;
 
 import java.util.List;
 
@@ -12,10 +13,12 @@ public class BankerController {
 
     private final ClientService clientService;
     private final AccountService accountService;
+    private final TransactionService transactionService;
 
-    public BankerController(ClientService clientService, AccountService accountService) {
+    public BankerController(ClientService clientService, AccountService accountService, TransactionService transactionService) {
         this.clientService = clientService;
         this.accountService = accountService;
+        this.transactionService = transactionService;
     }
 
     public void addNewClientWithAccount(String firstName, String lastName, String email, String password,
@@ -98,6 +101,57 @@ public class BankerController {
                 selectedClient.getLastName() + "' has been successfully removed.");
         } catch (Exception e) {
             System.out.println("\nError removing client: " + e.getMessage());
+        }
+    }
+
+
+    // display system statistics for the banker
+    public void displayStatistics() {
+        try {
+            System.out.println("\n=== Bank System Statistics ===");
+            System.out.println("=" .repeat(50));
+
+            // Client Statistics
+            int totalClients = clientService.listClients().size();
+            System.out.println("\n•CLIENT STATISTICS:");
+            System.out.println("   Total Clients: " + totalClients);
+
+            // Account Statistics
+            int totalAccounts = accountService.getTotalAccountCount();
+            double totalSystemBalance = accountService.getTotalSystemBalance();
+            double averageBalance = accountService.getAverageAccountBalance();
+
+            System.out.println("\n•ACCOUNT STATISTICS:");
+            System.out.println("   Total Accounts: " + totalAccounts);
+            System.out.println("   Total System Balance: " + String.format("%.2f DH", totalSystemBalance));
+            System.out.println("   Average Account Balance: " + String.format("%.2f DH", averageBalance));
+
+            // Transaction Statistics - Counts
+            int depositCount = transactionService.getDepositCount();
+            int withdrawalCount = transactionService.getWithdrawalCount();
+            int transferCount = transactionService.getTransferCount();
+            int totalTransactions = transactionService.getTotalTransactionCount();
+
+            System.out.println("\n•TRANSACTION COUNTS:");
+            System.out.println("   Number of Deposits: " + depositCount);
+            System.out.println("   Number of Withdrawals: " + withdrawalCount);
+            System.out.println("   Number of Transfers: " + transferCount);
+            System.out.println("   Total Transactions: " + totalTransactions);
+
+            // Transaction Statistics - Amounts
+            double totalDeposits = transactionService.getTotalSystemDeposits();
+            double totalWithdrawals = transactionService.getTotalSystemWithdrawals();
+            double totalTransfers = transactionService.getTotalSystemTransfers();
+
+            System.out.println("\n•TRANSACTION AMOUNTS:");
+            System.out.println("   Total Deposits: " + String.format("%.2f DH", totalDeposits));
+            System.out.println("   Total Withdrawals: " + String.format("%.2f DH", totalWithdrawals));
+            System.out.println("   Total Transfers: " + String.format("%.2f DH", totalTransfers));
+
+            System.out.println("\n" + "=" .repeat(50));
+
+        } catch (Exception e) {
+            System.out.println("Error retrieving statistics: " + e.getMessage());
         }
     }
 }

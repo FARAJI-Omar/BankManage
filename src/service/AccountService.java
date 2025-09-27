@@ -8,6 +8,13 @@ import java.util.*;
 
 public interface AccountService {
     Account createAccount(Client client, TypeAccount type, double initialBalance);
+
+    // global statistics methods
+    double getTotalSystemBalance();
+
+    double getAverageAccountBalance();
+
+    int getTotalAccountCount();
 //
 //    void closeAccount(UUID accountId);
 //

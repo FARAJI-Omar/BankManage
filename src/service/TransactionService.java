@@ -24,4 +24,21 @@ public interface TransactionService {
     List<Transaction> filterTransactions(Client client, Predicate<Transaction> filter);
 
     List<Transaction> sortTransactionsByDate(Client client, boolean ascending);
+
+    // System statistics methods
+    List<Transaction> getAllTransactions();
+
+    double getTotalSystemDeposits();
+
+    double getTotalSystemWithdrawals();
+
+    double getTotalSystemTransfers();
+
+    int getTotalTransactionCount();
+
+    int getDepositCount();
+
+    int getWithdrawalCount();
+
+    int getTransferCount();
 }

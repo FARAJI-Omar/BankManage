@@ -24,7 +24,7 @@ public class HomeController {
     private static final ClientServiceImpl clientService = new ClientServiceImpl(clientRepository, authService);
     private static final AccountServiceImpl accountService = new AccountServiceImpl(accountRepository);
     private static final TransactionServiceImpl transactionService = new TransactionServiceImpl(transactionRepository, accountRepository);
-    private static final BankerController bankerController = new BankerController(clientService, accountService);
+    private static final BankerController bankerController = new BankerController(clientService, accountService, transactionService);
     private static final ClientController clientController = new ClientController(clientService);
     private static final TransactionController transactionController = new TransactionController(transactionService, clientService);
     private static final BankerView bankerView = new BankerView(bankerController);

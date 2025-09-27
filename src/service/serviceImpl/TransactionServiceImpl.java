@@ -208,4 +208,59 @@ public class TransactionServiceImpl implements TransactionService {
                     (t1, t2) -> t2.getDate().compareTo(t1.getDate()))
                 .toList();
     }
+
+    @Override
+    public List<Transaction> getAllTransactions() {
+        return transactionRepository.findAll();
+    }
+
+    @Override
+    public double getTotalSystemDeposits() {
+        return transactionRepository.findAll().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.DEPOSIT)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    }
+
+    @Override
+    public double getTotalSystemWithdrawals() {
+        return transactionRepository.findAll().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.WITHDRAWAL)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    }
+
+    @Override
+    public double getTotalSystemTransfers() {
+        return transactionRepository.findAll().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.TRANSFER)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    }
+
+    @Override
+    public int getTotalTransactionCount() {
+        return transactionRepository.findAll().size();
+    }
+
+    @Override
+    public int getDepositCount() {
+        return (int) transactionRepository.findAll().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.DEPOSIT)
+                .count();
+    }
+
+    @Override
+    public int getWithdrawalCount() {
+        return (int) transactionRepository.findAll().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.WITHDRAWAL)
+                .count();
+    }
+
+    @Override
+    public int getTransferCount() {
+        return (int) transactionRepository.findAll().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.TRANSFER)
+                .count();
+    }
 }
