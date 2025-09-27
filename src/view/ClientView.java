@@ -30,6 +30,9 @@ public class ClientView {
                     Account primaryAccount = clientController.getPrimaryAccount();
                     System.out.println("•" + primaryAccount.getAccountType() + " Account: " + primaryAccount.getAccountId());
                     System.out.println("•Balance: " + String.format("%.2f", primaryAccount.getBalance()) + " DH");
+                    System.out.println("•Total Withdrawals: " + String.format("%.2f", transactionController.getTotalWithdrawals()) + " DH");
+                    System.out.println("•Total Deposits: " + String.format("%.2f", transactionController.getTotalDeposits()) + " DH");
+                    System.out.println("•Total Transfers: " + String.format("%.2f", transactionController.getTotalTransfers()) + " DH");
                 } catch (IllegalStateException e) {
                     System.out.println("•No account information available");
                 }

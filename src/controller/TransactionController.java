@@ -180,4 +180,32 @@ public class TransactionController {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
+    public double getTotalWithdrawals() {
+        Client currentClient = (Client) HomeController.getCurrentUser();
+        double total = transactionService.totalWithdrawals(currentClient);
+        if (total > 0) {
+            return total;
+        }else  {
+            return 0.0;
+        }
+    }
+
+    public double getTotalDeposits() {
+        Client currentClient = (Client) HomeController.getCurrentUser();
+        double total = transactionService.totalWithdrawals(currentClient);
+        if (total > 0) {
+            return total;
+        }else  {
+            return 0.0;
+        }    }
+
+    public double getTotalTransfers() {
+        Client currentClient = (Client) HomeController.getCurrentUser();
+        double total = transactionService.totalWithdrawals(currentClient);
+        if (total > 0) {
+            return total;
+        }else  {
+            return 0.0;
+        }    }
 }

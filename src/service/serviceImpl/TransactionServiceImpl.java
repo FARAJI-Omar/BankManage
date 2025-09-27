@@ -162,4 +162,31 @@ public class TransactionServiceImpl implements TransactionService {
 
         return transactions;
     }
+
+    @Override
+    public double totalWithdrawals(Client client) {
+        Account account = client.getAccounts().get(0);
+        return account.getTransactions().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.WITHDRAWAL)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    }
+
+    @Override
+    public double totalDeposits(Client client) {
+        Account account = client.getAccounts().get(0);
+        return account.getTransactions().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.DEPOSIT)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    }
+
+    @Override
+    public double totalTransfers(Client client) {
+        Account account = client.getAccounts().get(0);
+        return account.getTransactions().stream()
+                .filter(transaction -> transaction.getTransactionType() == TypeTransaction.TRANSFER)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    }
 }
