@@ -7,6 +7,7 @@ import model.Client;
 import model.Transaction;
 import service.ClientService;
 import service.TransactionService;
+import util.DateUtil;
 import util.InputUtil;
 
 import java.util.List;
@@ -172,7 +173,7 @@ public class TransactionController {
                     t.getAmount(),
                     recipient,
                     t.getDescription().length() > 21 ? t.getDescription().substring(0, 18) + "..." : t.getDescription(),
-                    t.getDate().toString().substring(0, 19)
+                    DateUtil.formatDateTime(t.getDate())
                 );
             }
 
@@ -183,29 +184,16 @@ public class TransactionController {
 
     public double getTotalWithdrawals() {
         Client currentClient = (Client) HomeController.getCurrentUser();
-        double total = transactionService.totalWithdrawals(currentClient);
-        if (total > 0) {
-            return total;
-        }else  {
-            return 0.0;
-        }
+        return transactionService.totalWithdrawals(currentClient);
     }
 
     public double getTotalDeposits() {
         Client currentClient = (Client) HomeController.getCurrentUser();
-        double total = transactionService.totalWithdrawals(currentClient);
-        if (total > 0) {
-            return total;
-        }else  {
-            return 0.0;
-        }    }
+        return transactionService.totalDeposits(currentClient);
+    }
 
     public double getTotalTransfers() {
         Client currentClient = (Client) HomeController.getCurrentUser();
-        double total = transactionService.totalWithdrawals(currentClient);
-        if (total > 0) {
-            return total;
-        }else  {
-            return 0.0;
-        }    }
+        return transactionService.totalTransfers(currentClient);
+    }
 }

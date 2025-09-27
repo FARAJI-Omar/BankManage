@@ -24,7 +24,7 @@ public class ClientView {
             System.out.println("\n===== Client Dashboard =====\n");
 
             if (currentClient != null) {
-                System.out.println("Welcome Mr. " + currentClient.getFirstName());
+                System.out.println("Welcome Mr. " + currentClient.getFirstName() + "\n");
 
                 try {
                     Account primaryAccount = clientController.getPrimaryAccount();
