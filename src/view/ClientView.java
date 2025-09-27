@@ -2,6 +2,7 @@ package view;
 
 import controller.HomeController;
 import controller.ClientController;
+import controller.TransactionController;
 import model.Client;
 import model.Account;
 import util.InputUtil;
@@ -9,9 +10,11 @@ import util.InputUtil;
 public class ClientView {
     
     private final ClientController clientController;
-    
-    public ClientView(ClientController clientController) {
+    private final TransactionController transactionController;
+
+    public ClientView(ClientController clientController, TransactionController transactionController) {
         this.clientController = clientController;
+        this.transactionController = transactionController;
     }
     
     public void clientView() {
@@ -44,7 +47,7 @@ public class ClientView {
                     showTransactionMenu();
                     break;
                 case 2:
-                    clientController.viewTransactionHistory();
+                    transactionController.viewTransactionHistory();
                     break;
                 case 3:
                     System.out.println("Logged out successfully!");
@@ -68,13 +71,13 @@ public class ClientView {
 
             switch (choice) {
                 case 1:
-                    clientController.makeWithdrawal();
+                    transactionController.makeWithdrawal();
                     break;
                 case 2:
-                    clientController.makeDeposit();
+                    transactionController.makeDeposit();
                     break;
                 case 3:
-                    clientController.makeTransfer();
+                    transactionController.makeTransfer();
                     break;
                 case 4:
                     return; // Go back to main menu

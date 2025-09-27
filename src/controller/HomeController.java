@@ -25,9 +25,10 @@ public class HomeController {
     private static final AccountServiceImpl accountService = new AccountServiceImpl(accountRepository);
     private static final TransactionServiceImpl transactionService = new TransactionServiceImpl(transactionRepository, accountRepository);
     private static final BankerController bankerController = new BankerController(clientService, accountService);
-    private static final ClientController clientController = new ClientController(transactionService, clientService);
+    private static final ClientController clientController = new ClientController(clientService);
+    private static final TransactionController transactionController = new TransactionController(transactionService, clientService);
     private static final BankerView bankerView = new BankerView(bankerController);
-    private static final ClientView clientView = new ClientView(clientController);
+    private static final ClientView clientView = new ClientView(clientController, transactionController);
 
     public static Person currentUser = null; //track the logged-in user
 
