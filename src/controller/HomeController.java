@@ -1,6 +1,7 @@
 package controller;
 
 import exceptions.AccountNotFoundException;
+import model.Client;
 import model.Person;
 import model.enums.Role;
 import repository.InMemoryImpl.InMemoryAccountRepository;
@@ -14,6 +15,7 @@ import util.ValidatorUtil;
 import view.BankerView;
 import view.ClientView;
 
+import java.util.List;
 import java.util.Optional;
 
 public class HomeController {
@@ -56,6 +58,13 @@ public class HomeController {
 
                     // navigate to appropriate view
                     if (expectedRole == Role.CLIENT) {
+                        List<Client> allClients = clientService.listClients();
+                        for (Client repoClient : allClients) {
+                            if (repoClient.getClientId().equals(((Client) currentUser).getClientId())) {
+                                currentUser = repoClient; // Use repository reference
+                                break;
+                            }
+                        }
                         clientView.clientView();
                     } else {
                         bankerView.bankerView();
@@ -76,5 +85,13 @@ public class HomeController {
 
     public static Person getCurrentUser() {
         return currentUser;
+    }
+
+    // logout the current user and clear session
+    public static void logout() {
+        if (currentUser != null) {
+            System.out.println("User " + currentUser.getFirstName() + " logged out successfully.");
+            currentUser = null;
+        }
     }
 }

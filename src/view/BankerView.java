@@ -34,7 +34,7 @@ public class BankerView {
                     statistics();
                     break;
                 case 4:
-                    System.out.println("Logged out successfully!");
+                    controller.HomeController.logout();
                     return;
                 default:
                     System.out.println("Invalid option. Please try again.");
@@ -85,13 +85,13 @@ public class BankerView {
 
             switch(choice) {
                 case 1:
-                    System.out.println("Viewing All Transactions... (Not implemented yet)");
+                    bankerController.viewAllTransactions();
                     break;
                 case 2:
-                    System.out.println("Viewing a Client Transactions... (Not implemented yet)");
+                    bankerController.viewClientTransactions();
                     break;
                 case 3:
-                    System.out.println("Viewing Suspicious Transactions... (Not implemented yet)");
+                    bankerController.viewSuspiciousTransactions();
                     break;
                 case 4:
                     System.out.println("\n");

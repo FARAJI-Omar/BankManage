@@ -41,4 +41,11 @@ public interface TransactionService {
     int getWithdrawalCount();
 
     int getTransferCount();
+
+    // Suspicious transaction detection methods
+    List<Transaction> getSuspiciousTransactions();
+
+    List<Transaction> getLargeAmountTransactions(double threshold);
+
+    List<Transaction> getRepeatedTransactions(int minOccurrences);
 }

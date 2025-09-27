@@ -57,7 +57,7 @@ public class ClientView {
                     transactionController.filterAndSortTransactions();
                     break;
                 case 4:
-                    System.out.println("Logged out successfully!");
+                    controller.HomeController.logout();
                     return;
                 default:
                     System.out.println("Invalid option. Please try again.");

@@ -2,6 +2,7 @@ package controller;
 
 import model.Account;
 import model.Client;
+import model.Transaction;
 import model.enums.TypeAccount;
 import service.AccountService;
 import service.ClientService;
@@ -152,6 +153,237 @@ public class BankerController {
 
         } catch (Exception e) {
             System.out.println("Error retrieving statistics: " + e.getMessage());
+        }
+    }
+
+
+    // Display all transactions in the system
+    public void viewAllTransactions() {
+        try {
+            List<Transaction> allTransactions = transactionService.getAllTransactions();
+
+            System.out.println("\n=== All System Transactions ===");
+
+            if (allTransactions.isEmpty()) {
+                System.out.println("No transactions found in the system.");
+                return;
+            }
+
+            // Sort transactions by date (newest first)
+            allTransactions.sort((t1, t2) -> t2.getDate().compareTo(t1.getDate()));
+
+            System.out.println("\n# | Type       | Amount     | Client               | Recipient            | Description           | Date");
+            System.out.println("--|------------|------------|----------------------|----------------------|-----------------------|--------------------");
+
+            for (int i = 0; i < allTransactions.size(); i++) {
+                Transaction t = allTransactions.get(i);
+
+                // Get client name from source account
+                String clientName = "-";
+                if (t.getSourceAccount() != null && t.getSourceAccount().getClient() != null) {
+                    Client client = t.getSourceAccount().getClient();
+                    clientName = client.getFirstName() + " " + client.getLastName();
+                    if (clientName.length() > 20) {
+                        clientName = clientName.substring(0, 17) + "...";
+                    }
+                }
+
+                // Get recipient name for transfers
+                String recipient = "-";
+                if (t.getTransactionType().toString().equals("TRANSFER")) {
+                    if (t.getDestinationAccount() != null && t.getDestinationAccount().getClient() != null) {
+                        Client recipientClient = t.getDestinationAccount().getClient();
+                        recipient = recipientClient.getFirstName() + " " + recipientClient.getLastName();
+                        if (recipient.length() > 20) {
+                            recipient = recipient.substring(0, 17) + "...";
+                        }
+                    }
+                }
+
+                System.out.printf("%-2d| %-10s | %10.2f | %-20s | %-20s | %-21s | %s%n",
+                    i + 1,
+                    t.getTransactionType(),
+                    t.getAmount(),
+                    clientName,
+                    recipient,
+                    t.getDescription().length() > 21 ? t.getDescription().substring(0, 18) + "..." : t.getDescription(),
+                    util.DateUtil.formatDateTime(t.getDate())
+                );
+            }
+
+            System.out.println("\nTotal transactions: " + allTransactions.size());
+
+        } catch (Exception e) {
+            System.out.println("Error retrieving transactions: " + e.getMessage());
+        }
+    }
+
+    // Display transactions for a specific client selected by the banker
+    public void viewClientTransactions() {
+        try {
+            List<Client> clients = clientService.listClients();
+
+            if (clients.isEmpty()) {
+                System.out.println("No clients found in the system.");
+                return;
+            }
+
+            System.out.println("\n=== Select Client to View Transactions ===");
+            System.out.println("\nAvailable Clients:");
+            System.out.printf("%-5s %-15s %-15s %-30s%n", "#", "First Name", "Last Name", "Email");
+            System.out.println("─".repeat(70));
+
+            for (int i = 0; i < clients.size(); i++) {
+                Client client = clients.get(i);
+                System.out.printf("%-5d %-15s %-15s %-30s%n",
+                    i + 1,
+                    client.getFirstName(),
+                    client.getLastName(),
+                    client.getEmail()
+                );
+            }
+
+            System.out.println("\n0. Cancel");
+
+            int choice = util.InputUtil.readInt("\nSelect client (0 to cancel): ");
+
+            if (choice == 0) {
+                System.out.println("Operation cancelled.");
+                return;
+            }
+
+            if (choice < 1 || choice > clients.size()) {
+                System.out.println("Invalid selection. Please try again.");
+                return;
+            }
+
+            // Get selected client
+            Client selectedClient = clients.get(choice - 1);
+            List<Transaction> clientTransactions = transactionService.getTransactions(selectedClient);
+
+            System.out.println("\n=== Transactions for " + selectedClient.getFirstName() + " " +
+                selectedClient.getLastName() + " ===");
+
+            if (clientTransactions.isEmpty()) {
+                System.out.println("No transactions found for this client.");
+                return;
+            }
+
+            System.out.println("\n# | Type       | Amount     | Recipient            | Description           | Date");
+            System.out.println("--|------------|------------|----------------------|-----------------------|--------------------");
+
+            for (int i = 0; i < clientTransactions.size(); i++) {
+                Transaction t = clientTransactions.get(i);
+
+                // Get recipient for transfers
+                String recipient = "-";
+                if (t.getTransactionType().toString().equals("TRANSFER")) {
+                    if (t.getDestinationAccount() != null && t.getDestinationAccount().getClient() != null) {
+                        Client recipientClient = t.getDestinationAccount().getClient();
+                        recipient = recipientClient.getFirstName() + " " + recipientClient.getLastName();
+                        if (recipient.length() > 20) {
+                            recipient = recipient.substring(0, 17) + "...";
+                        }
+                    }
+                }
+
+                System.out.printf("%-2d| %-10s | %10.2f | %-20s | %-21s | %s%n",
+                    i + 1,
+                    t.getTransactionType(),
+                    t.getAmount(),
+                    recipient,
+                    t.getDescription().length() > 21 ? t.getDescription().substring(0, 18) + "..." : t.getDescription(),
+                    util.DateUtil.formatDateTime(t.getDate())
+                );
+            }
+
+            System.out.println("\nTotal transactions for this client: " + clientTransactions.size());
+
+            // Show client account balance
+            if (!selectedClient.getAccounts().isEmpty()) {
+                double balance = selectedClient.getAccounts().get(0).getBalance();
+                System.out.println("Current account balance: " + String.format("%.2f DH", balance));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error retrieving client transactions: " + e.getMessage());
+        }
+    }
+
+    // Display suspicious transactions with categorization
+    public void viewSuspiciousTransactions() {
+        try {
+            List<Transaction> suspiciousTransactions = transactionService.getSuspiciousTransactions();
+            List<Transaction> largeAmountTransactions = transactionService.getLargeAmountTransactions(10000.0);
+            List<Transaction> repeatedTransactions = transactionService.getRepeatedTransactions(3);
+
+            System.out.println("\n=== Suspicious Transactions Report ===");
+
+            if (suspiciousTransactions.isEmpty()) {
+                System.out.println("\nNo suspicious transactions found.");
+                return;
+            }
+
+            System.out.println("\n# | Type       | Amount     | Client               | Recipient            | Description           | Date                | Reason");
+            System.out.println("--|------------|------------|----------------------|----------------------|-----------------------|---------------------|------------------");
+
+            for (int i = 0; i < suspiciousTransactions.size(); i++) {
+                Transaction t = suspiciousTransactions.get(i);
+
+                // Get client name from source account
+                String clientName = "-";
+                if (t.getSourceAccount() != null && t.getSourceAccount().getClient() != null) {
+                    Client client = t.getSourceAccount().getClient();
+                    clientName = client.getFirstName() + " " + client.getLastName();
+                    if (clientName.length() > 20) {
+                        clientName = clientName.substring(0, 17) + "...";
+                    }
+                }
+
+                // Get recipient name for transfers
+                String recipient = "-";
+                if (t.getTransactionType().toString().equals("TRANSFER")) {
+                    if (t.getDestinationAccount() != null && t.getDestinationAccount().getClient() != null) {
+                        Client recipientClient = t.getDestinationAccount().getClient();
+                        recipient = recipientClient.getFirstName() + " " + recipientClient.getLastName();
+                        if (recipient.length() > 20) {
+                            recipient = recipient.substring(0, 17) + "...";
+                        }
+                    }
+                }
+
+                // Determine reason for being suspicious
+                String reason = "";
+                if (largeAmountTransactions.contains(t)) {
+                    reason = "Large Amount";
+                }
+                if (repeatedTransactions.contains(t)) {
+                    if (!reason.isEmpty()) {
+                        reason += " + Repeated";
+                    } else {
+                        reason = "Repeated Pattern";
+                    }
+                }
+
+                System.out.printf("%-2d| %-10s | %10.2f | %-20s | %-20s | %-21s | %-19s | %s%n",
+                    i + 1,
+                    t.getTransactionType(),
+                    t.getAmount(),
+                    clientName,
+                    recipient,
+                    t.getDescription().length() > 21 ? t.getDescription().substring(0, 18) + "..." : t.getDescription(),
+                    util.DateUtil.formatDateTime(t.getDate()),
+                    reason
+                );
+            }
+
+            System.out.println("\nSuspicious Transaction Summary:");
+            System.out.println("  • Large Amount (>10,000 DH): " + largeAmountTransactions.size() + " transactions");
+            System.out.println("  • Repeated Patterns (>3 times): " + repeatedTransactions.size() + " transactions");
+            System.out.println("  • Total Suspicious: " + suspiciousTransactions.size() + " transactions");
+
+        } catch (Exception e) {
+            System.out.println("Error retrieving suspicious transactions: " + e.getMessage());
         }
     }
 }

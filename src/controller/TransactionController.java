@@ -12,6 +12,7 @@ import service.TransactionService;
 import util.DateUtil;
 import util.InputUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -112,7 +113,7 @@ public class TransactionController {
 
     private Client selectTransferRecipient() {
         // Get all clients from the system
-        List<Client> allClients = clientService.listClients();
+        List<Client> allClients = new ArrayList<>(clientService.listClients()); // Create a copy
         Client currentClient = (Client) HomeController.getCurrentUser();
 
         // Remove current client from the list to prevent self-transfer

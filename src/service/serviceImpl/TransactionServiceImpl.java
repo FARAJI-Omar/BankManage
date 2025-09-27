@@ -263,4 +263,52 @@ public class TransactionServiceImpl implements TransactionService {
                 .filter(transaction -> transaction.getTransactionType() == TypeTransaction.TRANSFER)
                 .count();
     }
+
+    @Override
+    public List<Transaction> getSuspiciousTransactions() {
+        List<Transaction> suspicious = new java.util.ArrayList<>();
+
+        // Add large amount transactions (>10000 DH)
+        suspicious.addAll(getLargeAmountTransactions(10000.0));
+
+        // Add repeated transactions (same type + amount >3 times per client)
+        suspicious.addAll(getRepeatedTransactions(3));
+
+        // Remove duplicates and sort by date (newest first)
+        return suspicious.stream()
+                .distinct()
+                .sorted((t1, t2) -> t2.getDate().compareTo(t1.getDate()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public List<Transaction> getLargeAmountTransactions(double threshold) {
+        return transactionRepository.findAll().stream()
+                .filter(transaction -> transaction.getAmount() > threshold)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public List<Transaction> getRepeatedTransactions(int minOccurrences) {
+        List<Transaction> allTransactions = transactionRepository.findAll();
+        List<Transaction> repeatedTransactions = new java.util.ArrayList<>();
+
+        // Group transactions by client + transaction type + amount
+        java.util.Map<String, List<Transaction>> groupedTransactions = allTransactions.stream()
+                .filter(t -> t.getSourceAccount() != null && t.getSourceAccount().getClient() != null)
+                .collect(java.util.stream.Collectors.groupingBy(t ->
+                    t.getSourceAccount().getClient().getClientId() + "|" +
+                    t.getTransactionType() + "|" +
+                    String.format("%.2f", t.getAmount())
+                ));
+
+        // Find groups with more than minOccurrences transactions
+        for (List<Transaction> group : groupedTransactions.values()) {
+            if (group.size() > minOccurrences) {
+                repeatedTransactions.addAll(group);
+            }
+        }
+
+        return repeatedTransactions;
+    }
 }
