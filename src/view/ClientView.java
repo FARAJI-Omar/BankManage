@@ -41,7 +41,8 @@ public class ClientView {
 
             System.out.println("1. Make Transaction");
             System.out.println("2. View Transaction History");
-            System.out.println("3. Logout");
+            System.out.println("3. Filter Transactions");
+            System.out.println("4. Logout");
 
             int choice = InputUtil.readInt("Please select an option: ");
 
@@ -53,6 +54,9 @@ public class ClientView {
                     transactionController.viewTransactionHistory();
                     break;
                 case 3:
+                    transactionController.filterAndSortTransactions();
+                    break;
+                case 4:
                     System.out.println("Logged out successfully!");
                     return;
                 default:

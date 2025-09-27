@@ -20,8 +20,8 @@ public interface TransactionService {
     double totalTransfers(Client client);
 
     List<Transaction> getTransactions(Client client);
-//
-//    List<Transaction> filterTransactions(Account account, Predicate<Transaction> filter);
-//
-//    List<Transaction> detectSuspiciousTransactions(Account account);
+
+    List<Transaction> filterTransactions(Client client, Predicate<Transaction> filter);
+
+    List<Transaction> sortTransactionsByDate(Client client, boolean ascending);
 }

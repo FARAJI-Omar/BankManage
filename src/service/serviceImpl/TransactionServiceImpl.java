@@ -13,6 +13,7 @@ import util.ValidatorUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class TransactionServiceImpl implements TransactionService {
 
@@ -188,5 +189,23 @@ public class TransactionServiceImpl implements TransactionService {
                 .filter(transaction -> transaction.getTransactionType() == TypeTransaction.TRANSFER)
                 .mapToDouble(Transaction::getAmount)
                 .sum();
+    }
+
+    @Override
+    public List<Transaction> filterTransactions(Client client, Predicate<Transaction> filter) {
+        Account account = client.getAccounts().get(0);
+        return account.getTransactions().stream()
+                .filter(filter)
+                .toList();
+    }
+
+    @Override
+    public List<Transaction> sortTransactionsByDate(Client client, boolean ascending) {
+        Account account = client.getAccounts().get(0);
+        return account.getTransactions().stream()
+                .sorted(ascending ?
+                    (t1, t2) -> t1.getDate().compareTo(t2.getDate()) :
+                    (t1, t2) -> t2.getDate().compareTo(t1.getDate()))
+                .toList();
     }
 }
